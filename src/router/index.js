@@ -8,9 +8,13 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 // 准备组件
+import login from "../views/login/index.vue"
 
 // 设置路由规则
-const routes = [];
+const routes = [{
+  path: "/login",
+  comment: login,
+}];
 
 // 创建路由对象
 const router = new VueRouter({
