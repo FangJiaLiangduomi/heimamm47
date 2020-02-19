@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
+// 导入 Element-ui
+import ElementUI from 'element-ui';
+// 导入 Element-ui的样式
+import 'element-ui/lib/theme-chalk/index.css';
 
 // 导入路由
-import router from './index.js'
+import router from './router/index'
 
 Vue.config.productionTip = false
+// 注册 Element-ui
+Vue.use(ElementUI);
 
 new Vue({
   render: h => h(App),
