@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+    <router-Link to="#">点我</router-Link>
   </div>
 </template>
 
