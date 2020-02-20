@@ -13,7 +13,7 @@ import login from "../views/login/index.vue"
 // 设置路由规则
 const routes = [{
   path: "/login",
-  comment: login,
+  component: login,
 }];
 
 // 创建路由对象
