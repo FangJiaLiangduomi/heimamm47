@@ -56,14 +56,22 @@
         </el-form-item>
       </el-form>
     </div>
-
     <!-- 右侧图片 -->
     <img src="./images/login_banner_ele.png" alt />
+    <!-- 使用对话框组件 -->
+    <reg></reg>
   </div>
 </template>
 
 <script>
+// 导入对话框组件
+import reg from './components/register'
+
 export default {
+  components:{
+    // 注册对话框组件
+    reg
+  },
   data() {
     return {
       // 表单双向绑定的数据
