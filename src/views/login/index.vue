@@ -52,14 +52,14 @@
         <!-- 登录按钮 -->
         <el-form-item>
           <el-button class="box-button" type="primary" @click="doLogin">登录</el-button>
-          <el-button class="box-button" type="primary">注册</el-button>
+          <el-button class="box-button" @click="showReg" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <!-- 右侧图片 -->
     <img src="./images/login_banner_ele.png" alt />
     <!-- 使用对话框组件 -->
-    <reg></reg>
+    <reg ref="reg"></reg>
   </div>
 </template>
 
@@ -86,15 +86,15 @@ export default {
         // 规则
         phone: [
           { required: true, message: "请输入手机号", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         // 解决多选用户协议通过验证问题
         agree: [
@@ -112,6 +112,7 @@ export default {
     };
   },
   methods: {
+    // 登录按钮点击事件
     doLogin() {
       // 找到表单对象，调用validate方法
       this.$refs.loginForm.validate(v => {
@@ -119,6 +120,10 @@ export default {
           alert("通过");
         }
       });
+    },
+    // 点击注册按钮弹出对话框
+    showReg(){
+      this.$refs.reg.dialogFormVisible = true;
     }
   }
 };
