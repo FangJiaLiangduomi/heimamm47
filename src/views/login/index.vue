@@ -29,11 +29,11 @@
         <!-- 验证码框 -->
         <el-form-item prop="code">
           <el-row>
-            <el-col :span="18">
+            <el-col :span="17">
               <el-input placeholder="请输入验证码" prefix-icon="el-icon-key" v-model="form.code"></el-input>
             </el-col>
-            <el-col :span="6">
-              <img class="code" src="./images/erwei.png" alt />
+            <el-col :span="7">
+              <img class="code" @click="changeImgCode" :src="imgUrl" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -66,6 +66,10 @@
 <script>
 // 导入对话框组件
 import reg from './components/register'
+// 导入封装登陆接口方法的地址
+import { login } from '@/api/login.js'
+// 导入封装token的方法地址
+import { token } from '@/utilis/token.js'
 
 export default {
   components:{
@@ -74,6 +78,8 @@ export default {
   },
   data() {
     return {
+      // 验证码图片地址
+      imgUrl: process.env.VUE_APP_URL + "/captcha?type=login",
       // 表单双向绑定的数据
       form: {
         phone: "",
@@ -117,13 +123,38 @@ export default {
       // 找到表单对象，调用validate方法
       this.$refs.loginForm.validate(v => {
         if (v) {
-          alert("通过");
+          // alert("通过");
+          // 发送接口请求
+          login({
+            phone: this.form.phone,
+            password: this.form.password,
+            code: this.form.code
+          }).then(res=>{
+            // console.log(res);
+            if(res.data.code == 200){
+              // 把token存起来
+              // window.localStorage.setItem('token',res.data.data.token);
+              setToken(res.data.data.token);
+              // 显示登陆成功提示
+              this.$message.success('登陆成功');
+              // 跳转到登陆页面
+              this.$router.push('./index');
+            }else{
+              // 跳转失败的错误提示
+              this.$message.error(res.data.message)
+            }
+          })
         }
       });
     },
     // 点击注册按钮弹出对话框
     showReg(){
       this.$refs.reg.dialogFormVisible = true;
+    },
+    // 验证按点击事件
+    changeImgCode(){
+      // 加时间戳解决图片缓存问题
+     this.imgUrl = process.env.VUE_APP_URL + "/captcha?type=login&aa=" + Date.now();
     }
   }
 };
