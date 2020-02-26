@@ -68,8 +68,8 @@
 import reg from './components/register'
 // 导入封装登陆接口方法的地址
 import { login } from '@/api/login.js'
-// 导入封装token的方法地址
-import { token } from '@/utilis/token.js'
+// 导入封装保存token的方法地址
+import { setToken } from '@/utilis/token.js'
 
 export default {
   components:{
@@ -82,10 +82,10 @@ export default {
       imgUrl: process.env.VUE_APP_URL + "/captcha?type=login",
       // 表单双向绑定的数据
       form: {
-        phone: "",
-        password: "",
+        phone: "18511111111",
+        password: "12345678",
         code: "",
-        agree: false,
+        agree: true,
       },
       // 规则对象
       rules: {
