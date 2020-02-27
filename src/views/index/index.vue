@@ -11,8 +11,9 @@
       </div>
       <!-- 右边部分 -->
       <div class="right">
-        <img :src="avatar" alt />
-        <span class="user">{{username}},你好</span>
+        <!-- 从vuex中取出头像$store.state.avatar -->
+        <img :src="$store.state.avatar" alt />
+        <span class="user">{{$store.state.username}},你好</span>
         <el-button @click="doLogout" type="primary" size="mini">退出</el-button>
       </div>
     </el-header>
@@ -61,9 +62,9 @@
 
 <script>
 // 导入接口
-import { info, logout } from "@/api/index.js";
+import { logout } from "@/api/index.js";
 // 导入操作删除token的工具
-import { removeToken } from "@/utilis/token.js";
+import { removeToken,getToken } from "@/utilis/token.js";
 
 export default {
   data() {
@@ -94,6 +95,9 @@ export default {
               this.$message.success("退出成功");
               // 删除本地token
               removeToken();
+              // 退出清空vuex，传入空字符串就是复制为空
+              this.$store.commit('changeUsername','');
+              this.$store.commit('changeAvatar','')
               // 跳转到登录页面
               this.$router.push("/login");
             }
@@ -107,16 +111,37 @@ export default {
         });
     }
   },
+  //  在首页（登录页面不用）生命周期最早的钩子里判断是否登录
+  beforeCreate() {
+    // 如果得到null，就代表没有token，也就没有登录
+    // 注意，这样在浏览器直接自己加个token值也会直接登录，所有要在登录之前判断token是否正确
+    if( getToken() == null ){
+      this.$message.error("请先登录");
+      this.$router.push('/login')
+    }
+  },
 
   // 在生命周期created中调用接口
+  // 带入token给服务器请求
+  // axios是啊异步请求，异步请求要等同步请求执行完在执行，所以会出现一个情况，判断token是在进入页面再判断的，网速比较慢的时候，会看到进入页面再判断的情况，所以这个请求要放在前置守卫里来进行判断
   created() {
-    // 调用获取用户信息接口
-    info().then(res => {
-      console.log(res);
-      this.username = res.data.data.username;
-      // 注意 接口返回的头像路径不是完整的路径，还有在前面拼接基地址，并且拼接的时候，中间不能忘了加个/
-      this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-    });
+    //   // 调用获取用户信息接口
+    // info().then(res => {
+    //   console.log(res);
+    //   // 判断登录的token是否正确
+    //   if(res.data.code == 200){
+    //     this.username = res.data.data.username;
+    //   // 注意 接口返回的头像路径不是完整的路径，还有在前面拼接基地址，并且拼接的时候，中间不能忘了加个/
+    //   this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
+    //   }else if(res.data.code == 206){
+    //     this.$message.error('登录异常，请重新登录');
+    //     // 删除token
+    //     removeToken();
+    //     // 返回登录
+    //     this.$router.push('/login')
+    //   }
+    // }
+    // );
   }
 };
 </script>
