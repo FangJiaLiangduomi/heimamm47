@@ -162,7 +162,7 @@ export default {
       height: 100%;
 
       i {
-        font-size: 24px;
+        font-size: 34px;
         margin-right: 22px;
       }
 
@@ -210,7 +210,7 @@ export default {
   }
 
   .my-main {
-    background-color: blue;
+    background:rgba(232,233,236,1);
   }
 }
 </style>

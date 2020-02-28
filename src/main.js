@@ -8,6 +8,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "./style/base.css"
 // 导入vuex对象
 import store from './store/index'
+// 导入全局过滤器
+// 这个文件只需要能够执行里面的代码就可以，所有只是简单的导入
+import '@/filters/filters'
 
 // 导入路由
 import router from './router/index'
