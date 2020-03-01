@@ -99,7 +99,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page"
-        :page-sizes="[1, 2, 30, 40]"
+        :page-sizes="[5, 10, 15, 20]"
         :page-size="size"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -140,7 +140,7 @@ export default {
       // 分页当前页默认页
       page: 1,
       // 页容量
-      size: 1,
+      size: 5,
       // 数据总数
       total: 1,
 
