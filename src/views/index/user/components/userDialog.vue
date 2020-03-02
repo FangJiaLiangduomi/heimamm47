@@ -5,7 +5,7 @@
     :title="isAdd ? '新增用户' : '编辑用户'"
     :visible.sync="dialogFormVisible"
   >
-    <el-form :rules="rules" :model="form">
+    <el-form :rules="rules" ref="form" :model="form">
       <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
@@ -46,7 +46,7 @@
 
 <script>
 // 导入接口
-import { userAdd } from "@/api/user";
+import { userAdd,userEdit } from "@/api/user";
 
 export default {
   name: "userDialog",
@@ -83,7 +83,7 @@ export default {
         ],
 
         role: [
-          { required: true, message: "角色不能为空", trigger: "change" }
+          { required: true, message: "角色不能为空", trigger: "blur" }
         ]
       }
     };
@@ -110,7 +110,15 @@ export default {
               }
             });
           } else {
-            
+            userEdit(this.form).then(res => {
+              if (res.data.code == 200) {
+                this.$message.success("修改成功");
+                this.dialogFormVisible = false;
+                this.$parent.getList();
+              } else {
+                this.$message.error(res.data.message);
+              }
+            });
           }
         }
       });

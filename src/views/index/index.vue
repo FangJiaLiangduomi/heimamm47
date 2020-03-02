@@ -23,30 +23,38 @@
       <el-aside class="my-aside" width="auto">
         <!-- default-active="2"默认选中的菜单  router属性为true，开启路由模式，点击菜单会进行路由跳转-->
         <el-menu :collapse="isCollapse" router default-active="1" class="el-menu-vertical-demo">
-          <el-menu-item index="/index/chart">
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据概览</span>
+
+          <!-- 根据当前用户角色的权限显示能够访问的列表  判断当前路由可以访问的角色里是否包含当前角色-->
+          <!-- 在外面再包一个盒子写v-for，直接写在里面会跟v-if冲突 -->
+          <template v-for="(item,index) in children">
+
+            <el-menu-item :index="'/index/' + item.path" v-if="item.meta.roles.includes($store.state.role)" :key="index">
+            <i :class="item.meta.icon"></i>
+            <span slot="title">{{item.meta.title}}</span>
           </el-menu-item>
+
+          </template>
           
-          <el-menu-item index="/index/user">
+          
+          <!-- <el-menu-item index="/index/user" v-if="['超级管理员', '管理员'].includes($store.state.role)">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
           
-          <el-menu-item index="/index/question">
+          <el-menu-item index="/index/question" v-if="['超级管理员', '管理员','老师','学生'].includes($store.state.role)">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
           
-          <el-menu-item index="/index/business">
+          <el-menu-item index="/index/business" v-if="['超级管理员', '管理员','老师'].includes($store.state.role)">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
           
-          <el-menu-item index="/index/subject">
+          <el-menu-item index="/index/subject" v-if="['超级管理员', '管理员','老师','学生'].includes($store.state.role)">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
-          </el-menu-item>
+          </el-menu-item> -->
           
         </el-menu>
 
@@ -65,6 +73,8 @@
 import { logout } from "@/api/index.js";
 // 导入操作删除token的工具
 import { removeToken,getToken } from "@/utilis/token.js";
+// 导入子路由的规则
+import children from '@/router/childrenRoutes.js'
 
 export default {
   data() {
@@ -74,7 +84,9 @@ export default {
       //   用户头像
       avatar: "",
     //   字体图标属性，点击控制左边盒子列表的展开与折叠
-      isCollapse: false
+      isCollapse: false,
+      // 把数组规则存到data
+      children,
     };
   },
 

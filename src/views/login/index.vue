@@ -135,8 +135,8 @@ export default {
               // 把token存起来
               // window.localStorage.setItem('token',res.data.data.token);
               setToken(res.data.data.token);
-              // 显示登陆成功提示
-              this.$message.success('登陆成功');
+              // 显示登陆成功提示（可能会因为账号被禁用而被导航守卫拦截下来，会出现两条提示），所以不能在这里提示，而在导航守卫提示
+              // this.$message.success('登陆成功');
               // 跳转到登陆页面
               this.$router.push('./index');
             }else{

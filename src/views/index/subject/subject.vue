@@ -66,14 +66,16 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作">
+<!-- v-if判断当前角色是否有权限操作，没有就不显示操作按钮 -->
+        <el-table-column label="操作" v-if="['超级管理员','管理员','老师'].includes($store.state.role)">
           <template slot-scope="scope">
             <el-button type="text" @click="showEdit(scope.row)">编辑</el-button>
             <el-button
               type="text"
               @click="changeStatus(scope.row)"
             >{{ scope.row.status === 1 ? '禁用' : '启用' }}</el-button>
-            <el-button type="text" @click="doDel(scope.row)">删除</el-button>
+               <!-- 老师角色没有权限执行删除命令，所有不显示删除按钮 -->
+            <el-button type="text" @click="doDel(scope.row)" v-if="['超级管理员','管理员'].includes($store.state.role)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
